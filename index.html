@@ -1054,14 +1054,22 @@
     background: var(--dark2);
     border: 1px solid rgba(74,124,63,0.35);
     width: 100%;
-    max-width: 700px;
-    max-height: 88vh;
+    max-width: 860px;
+    max-height: 90vh;
     overflow-y: auto;
     padding: 48px;
     position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--green) var(--dark3);
   }
+
+  .modal-box::-webkit-scrollbar { width: 6px; }
+  .modal-box::-webkit-scrollbar-track { background: var(--dark3); }
+  .modal-box::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+  .modal-box::-webkit-scrollbar-thumb:hover { background: var(--green-light); }
+
   .modal-box--sm { max-width: 440px; padding: 40px; }
-  .modal-box--lg { max-width: 960px; }
+  .modal-box--lg { max-width: 1000px; }
 
   .modal-close {
     position: absolute;
@@ -1076,6 +1084,47 @@
     padding: 4px 8px;
   }
   .modal-close:hover { color: #fff; }
+
+  /* ── NEWS MODAL TOOLBAR ─────────────────────────────── */
+  .nm-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--dark3);
+    border: 1px solid rgba(74,124,63,0.2);
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .nm-toolbar-label {
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-right: 4px;
+  }
+
+  .nm-select {
+    background: var(--dark2);
+    border: 1px solid rgba(74,124,63,0.25);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.78rem;
+    padding: 5px 10px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .nm-select:focus, .nm-select:hover { border-color: var(--green-light); }
+
+  .nm-toolbar-sep {
+    width: 1px;
+    height: 20px;
+    background: rgba(74,124,63,0.2);
+    margin: 0 4px;
+  }
+
 
   .modal-eyebrow {
     font-size: 0.65rem;
@@ -1249,7 +1298,62 @@
     transition: color 0.4s;
     padding: 0;
   }
-  .admin-access-btn:hover { color: var(--green-light); }
+  /* ── FORMATTING TOOLBAR ─────────────────────────────── */
+  .format-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--dark);
+    border: 1px solid rgba(74,124,63,0.25);
+    border-bottom: none;
+    align-items: center;
+  }
+
+  .format-toolbar-label {
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-right: 4px;
+  }
+
+  .format-select {
+    background: var(--dark3);
+    border: 1px solid rgba(74,124,63,0.25);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .format-select:focus { border-color: var(--green-light); }
+
+  .format-size-btn {
+    background: var(--dark3);
+    border: 1px solid rgba(74,124,63,0.2);
+    color: var(--text-dim);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+  .format-size-btn:hover { border-color: var(--green-light); color: var(--green-light); }
+  .format-size-btn.active { border-color: var(--accent); color: var(--accent); }
+
+  .format-sep {
+    width: 1px;
+    height: 24px;
+    background: rgba(74,124,63,0.2);
+  }
+
+  .admin-textarea-wrap .admin-textarea {
+    border-top: none;
+  }
 
 </style>
 </head>
@@ -1412,7 +1516,7 @@
         <h3>Модификации</h3>
         <p>Скачайте все необходимые моды для игры на сервере Project Battle. Доступны два зеркала для загрузки.</p>
         <div class="download-btns">
-          <a href="https://drive.google.com/drive/folders/1nrNC-E6d8GpmXGMmpMSviN0t8uJDWUOi" target="_blank" class="download-btn">
+          <a href="https://drive.google.com/drive/folders/1qBVVFAQKHo0QVUSDx6PYSiO_JDi4CDAN?usp=sharing" target="_blank" class="download-btn">
             Google Диск <span>↗</span>
           </a>
           <a href="https://mega.nz/folder/DggWWDJa#qBHC25TJSYpPkeSA_yitFA" target="_blank" class="download-btn">
@@ -1441,7 +1545,7 @@
       </div>
       <div class="footer-contact">
         <h4>Контакты</h4>
-        <p>Email: <a href="mailto:ourffers@gmail.com">ourffers@gmail.com</a></p>
+        <p>Email: <a href="/cdn-cgi/l/email-protection#1d72686f7b7b786f6e5d7a707c7471337e7270"><span class="__cf_email__" data-cfemail="137c6661757576616053747e727a7f3d707c7e">[email&#160;protected]</span></a></p>
         <p>Discord: <a href="https://discord.gg/QKrUfCHy" target="_blank">discord.gg/QKrUfCHy</a></p>
         <br>
         <h4 style="margin-top:16px;">Навигация</h4>
@@ -1558,6 +1662,27 @@
     <div class="modal-eyebrow" id="nmDate"></div>
     <h2 class="modal-title" id="nmTitle"></h2>
     <div class="modal-divider"></div>
+
+    <!-- TOOLBAR -->
+    <div class="nm-toolbar">
+      <span class="nm-toolbar-label">Шрифт</span>
+      <select class="nm-select" id="nmFontFamily" onchange="applyReaderFont()">
+        <option value="'Exo 2', sans-serif">Exo 2</option>
+        <option value="'Georgia', serif">Georgia</option>
+        <option value="'Courier New', monospace">Courier New</option>
+        <option value="'Arial', sans-serif">Arial</option>
+        <option value="'Russo One', sans-serif">Russo One</option>
+      </select>
+      <div class="nm-toolbar-sep"></div>
+      <span class="nm-toolbar-label">Размер</span>
+      <select class="nm-select" id="nmFontSize" onchange="applyReaderFont()">
+        <option value="0.82rem">Маленький</option>
+        <option value="0.95rem" selected>Средний</option>
+        <option value="1.1rem">Большой</option>
+        <option value="1.28rem">Очень большой</option>
+      </select>
+    </div>
+
     <div class="modal-content" id="nmContent"></div>
     <div class="modal-stats">
       <span class="news-stat" id="nmViews"></span>
@@ -1606,8 +1731,31 @@
       </div>
       <div class="admin-form-group">
         <label class="admin-label">Содержание</label>
-        <textarea id="adminContent" class="admin-textarea"
-                  placeholder="Введите текст новости...&#10;&#10;Поддерживаются переносы строк."></textarea>
+        <div class="format-toolbar">
+          <span class="format-toolbar-label">Шрифт</span>
+          <select class="format-select" id="fmtFont" onchange="applyFormat()">
+            <option value="'Exo 2', sans-serif">Exo 2 (основной)</option>
+            <option value="'Russo One', sans-serif">Russo One (жирный)</option>
+            <option value="'Bebas Neue', sans-serif">Bebas Neue (заголовок)</option>
+            <option value="'Georgia', serif">Georgia (классика)</option>
+            <option value="'Courier New', monospace">Courier New (моноширинный)</option>
+          </select>
+          <div class="format-sep"></div>
+          <span class="format-toolbar-label">Размер</span>
+          <button class="format-size-btn" onclick="applySize('0.8rem')" title="Маленький">S</button>
+          <button class="format-size-btn" onclick="applySize('0.95rem')" title="Средний">M</button>
+          <button class="format-size-btn" onclick="applySize('1.1rem')" title="Большой">L</button>
+          <button class="format-size-btn" onclick="applySize('1.35rem')" title="Очень большой">XL</button>
+          <div class="format-sep"></div>
+          <button class="format-size-btn" onclick="applyBold()" title="Жирный"><b>B</b></button>
+          <button class="format-size-btn" onclick="applyColor('#6aad5a')" title="Зелёный" style="color:#6aad5a;">A</button>
+          <button class="format-size-btn" onclick="applyColor('#c8a94a')" title="Золотой" style="color:#c8a94a;">A</button>
+          <button class="format-size-btn" onclick="applyColor('#ffffff')" title="Белый" style="color:#fff;">A</button>
+        </div>
+        <div class="admin-textarea-wrap">
+          <textarea id="adminContent" class="admin-textarea"
+                    placeholder="Введите текст новости...&#10;&#10;Выделите текст и используйте тулбар выше для форматирования.&#10;Поддерживаются переносы строк."></textarea>
+        </div>
       </div>
       <p class="form-error" id="adminSaveError"></p>
       <div class="admin-form-actions">
@@ -1708,14 +1856,103 @@ function openNews(id) {
   }
   document.getElementById('nmDate').textContent=fmtDate(n.created_at);
   document.getElementById('nmTitle').textContent=n.title;
-  document.getElementById('nmContent').innerHTML=esc(n.content).replace(/\n/g,'<br>');
+  // render as HTML (supports formatting tags) with newlines fallback
+  const content = n.content || '';
+  document.getElementById('nmContent').innerHTML = content.includes('<') ? content : content.replace(/\n/g,'<br>');
   document.getElementById('nmViews').textContent=n.views+' просмотров';
   const lb=document.getElementById('nmLike');
   lb.dataset.id=id; lb.className='like-btn'+(isLiked(id)?' liked':'');
   lb.querySelector('.lc').textContent=n.likes+' лайков';
   document.getElementById('newsModal').classList.add('open');
+  loadReaderFont();
+  setTimeout(applyReaderFont, 10);
 }
+
+// ── FORMATTING HELPERS ───────────────────────────────────────
+function getSelection(ta) {
+  const start = ta.selectionStart, end = ta.selectionEnd;
+  return { start, end, text: ta.value.slice(start, end) };
+}
+
+function wrapSelection(tag) {
+  const ta = document.getElementById('adminContent');
+  const { start, end, text } = getSelection(ta);
+  if (!text) return;
+  const before = ta.value.slice(0, start);
+  const after  = ta.value.slice(end);
+  const wrapped = `${tag}${text}</${tag.match(/<(\w+)/)[1]}>`;
+  ta.value = before + wrapped + after;
+  ta.focus();
+  ta.setSelectionRange(start, start + wrapped.length);
+}
+
+function applyFormat() {
+  const ta   = document.getElementById('adminContent');
+  const font = document.getElementById('fmtFont').value;
+  const { start, end, text } = getSelection(ta);
+  if (!text) return;
+  const before  = ta.value.slice(0, start);
+  const after   = ta.value.slice(end);
+  const wrapped = `<span style="font-family:${font}">${text}</span>`;
+  ta.value = before + wrapped + after;
+  ta.focus();
+}
+
+function applySize(size) {
+  const ta = document.getElementById('adminContent');
+  const { start, end, text } = getSelection(ta);
+  if (!text) return;
+  const before  = ta.value.slice(0, start);
+  const after   = ta.value.slice(end);
+  const wrapped = `<span style="font-size:${size}">${text}</span>`;
+  ta.value = before + wrapped + after;
+  ta.focus();
+}
+
+function applyBold() {
+  const ta = document.getElementById('adminContent');
+  const { start, end, text } = getSelection(ta);
+  if (!text) return;
+  const before  = ta.value.slice(0, start);
+  const after   = ta.value.slice(end);
+  const wrapped = `<strong>${text}</strong>`;
+  ta.value = before + wrapped + after;
+  ta.focus();
+}
+
+function applyColor(color) {
+  const ta = document.getElementById('adminContent');
+  const { start, end, text } = getSelection(ta);
+  if (!text) return;
+  const before  = ta.value.slice(0, start);
+  const after   = ta.value.slice(end);
+  const wrapped = `<span style="color:${color}">${text}</span>`;
+  ta.value = before + wrapped + after;
+  ta.focus();
+}
+
 function closeNewsModal(){ document.getElementById('newsModal').classList.remove('open'); }
+
+function applyReaderFont() {
+  const content = document.getElementById('nmContent');
+  if (!content) return;
+  const family = document.getElementById('nmFontFamily').value;
+  const size   = document.getElementById('nmFontSize').value;
+  content.style.fontFamily = family;
+  content.style.fontSize   = size;
+  try { localStorage.setItem('pb_reader_font', JSON.stringify({ family, size })); } catch {}
+}
+
+function loadReaderFont() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('pb_reader_font') || 'null');
+    if (!saved) return;
+    const ff = document.getElementById('nmFontFamily');
+    const fs = document.getElementById('nmFontSize');
+    if (ff) ff.value = saved.family;
+    if (fs) fs.value = saved.size;
+  } catch {}
+}
 
 function toggleLike(id) {
   const n=allNews.find(x=>x.id===id); if(!n) return;
