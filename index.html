@@ -664,53 +664,27 @@
   /* NEWS */
   .news-section { background: var(--dark); }
 
-  .news-carousel-wrap {
-    position: relative;
-  }
-
-  .news-carousel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 28px;
-  }
-
-  .news-nav {
-    display: flex;
-    gap: 8px;
-  }
-
-  .news-nav-btn {
-    width: 40px;
-    height: 40px;
-    background: var(--dark3);
-    border: 1px solid rgba(74,124,63,0.25);
-    color: var(--text-dim);
-    font-size: 1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-
-  .news-nav-btn:hover:not(:disabled) {
-    border-color: var(--green-light);
-    color: var(--green-light);
-  }
-
-  .news-nav-btn:disabled { opacity: 0.25; cursor: default; }
-
-  .news-track-outer {
-    overflow: hidden;
-  }
-
   .news-grid {
     display: flex;
     gap: 24px;
-    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
-    will-change: transform;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 12px;
+    cursor: grab;
+  }
+
+  .news-grid:active { cursor: grabbing; }
+
+  .news-grid::-webkit-scrollbar {
+    height: 4px;
+  }
+  .news-grid::-webkit-scrollbar-track {
+    background: var(--dark3);
+  }
+  .news-grid::-webkit-scrollbar-thumb {
+    background: var(--green);
+    border-radius: 2px;
   }
 
   .news-card {
@@ -721,7 +695,8 @@
     transition: border-color 0.3s, transform 0.3s;
     cursor: pointer;
     flex: 0 0 calc(50% - 12px);
-    min-width: 0;
+    min-width: 300px;
+    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
   }
@@ -765,17 +740,8 @@
     line-height: 1.7;
   }
 
-  .news-counter {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 3px;
-    color: var(--text-dim);
-  }
-
-  .news-counter span { color: var(--accent); }
-
   @media (max-width: 700px) {
-    .news-card { flex: 0 0 calc(100% - 0px); }
+    .news-card { flex: 0 0 85vw; }
   }
 
   .news-author {
@@ -1422,26 +1388,11 @@
 <!-- NEWS -->
 <section class="news-section" id="news">
   <div class="container">
-    <div class="news-carousel-header">
-      <div>
-        <p class="section-label">Лента новостей</p>
-        <h2 class="section-title" style="margin-bottom:0;">Последние события</h2>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;">
-        <span class="news-counter" id="newsCounter"></span>
-        <div class="news-nav">
-          <button class="news-nav-btn" id="newsPrev" onclick="newsSlide(-1)">&#8592;</button>
-          <button class="news-nav-btn" id="newsNext" onclick="newsSlide(1)">&#8594;</button>
-        </div>
-      </div>
-    </div>
+    <p class="section-label">Лента новостей</p>
+    <h2 class="section-title">Последние события</h2>
     <div class="section-divider"></div>
-    <div class="news-carousel-wrap">
-      <div class="news-track-outer">
-        <div class="news-grid" id="newsGrid">
-          <div class="news-loading">Загрузка...</div>
-        </div>
-      </div>
+    <div class="news-grid" id="newsGrid">
+      <div class="news-loading">Загрузка...</div>
     </div>
   </div>
 </section>
@@ -1486,7 +1437,7 @@
       </div>
       <div class="footer-contact">
         <h4>Контакты</h4>
-        <p>Email: <a href="/cdn-cgi/l/email-protection#630c1611050506111023040e020a0f4d000c0e"><span class="__cf_email__" data-cfemail="741b01061212110607341319151d185a171b19">[email&#160;protected]</span></a></p>
+        <p>Email: <a href="mailto:ourffers@gmail.com">ourffers@gmail.com</a></p>
         <p>Discord: <a href="https://discord.gg/QKrUfCHy" target="_blank">discord.gg/QKrUfCHy</a></p>
         <br>
         <h4 style="margin-top:16px;">Навигация</h4>
@@ -1502,7 +1453,7 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // ── ABOUT SECTION SLIDESHOW ──────────────────────────────────────
   (function () {
     const slides    = document.querySelectorAll('.about-slide');
@@ -1704,46 +1655,11 @@ async function loadNews() {
   renderNews();
 }
 
-let newsOffset = 0;
-const NEWS_PER_PAGE = 2;
-
-function updateCarousel() {
-  const grid = document.getElementById('newsGrid');
-  if (!grid) return;
-  const cardW = grid.querySelector('.news-card');
-  if (!cardW) return;
-  const outerW = grid.parentElement.offsetWidth;
-  const gap = 24;
-  const step = outerW / NEWS_PER_PAGE; // includes half-gap
-  grid.style.transform = `translateX(-${newsOffset * (step + gap / NEWS_PER_PAGE)}px)`;
-
-  const total = allNews.length;
-  const maxOffset = Math.max(0, total - NEWS_PER_PAGE);
-  document.getElementById('newsPrev').disabled = newsOffset <= 0;
-  document.getElementById('newsNext').disabled = newsOffset >= maxOffset;
-  const counter = document.getElementById('newsCounter');
-  if (counter && total > 0) {
-    counter.innerHTML = `<span>${newsOffset + 1}</span> — <span>${Math.min(newsOffset + NEWS_PER_PAGE, total)}</span> / ${total}`;
-  }
-}
-
-function newsSlide(dir) {
-  const total = allNews.length;
-  const maxOffset = Math.max(0, total - NEWS_PER_PAGE);
-  newsOffset = Math.max(0, Math.min(newsOffset + dir, maxOffset));
-  updateCarousel();
-}
-
 function renderNews() {
   const grid = document.getElementById('newsGrid');
   if (!grid) return;
-  newsOffset = 0;
   if (!allNews.length) {
-    grid.style.transform = '';
     grid.innerHTML = '<p style="color:var(--text-dim);font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:40px 0;width:100%;">Новостей пока нет</p>';
-    document.getElementById('newsCounter').textContent = '';
-    document.getElementById('newsPrev').disabled = true;
-    document.getElementById('newsNext').disabled = true;
     return;
   }
   grid.innerHTML = allNews.map(n => `
@@ -1763,7 +1679,20 @@ function renderNews() {
       </div>
     </div>
   `).join('');
-  setTimeout(updateCarousel, 50);
+
+  // drag to scroll
+  let isDown = false, startX, scrollLeft;
+  grid.addEventListener('mousedown', e => {
+    isDown = true; startX = e.pageX - grid.offsetLeft; scrollLeft = grid.scrollLeft;
+  });
+  grid.addEventListener('mouseleave', () => isDown = false);
+  grid.addEventListener('mouseup', () => isDown = false);
+  grid.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - grid.offsetLeft;
+    grid.scrollLeft = scrollLeft - (x - startX);
+  });
 }
 
 function openNews(id) {
@@ -1876,4 +1805,14 @@ async function saveNews(){
 async function deleteNewsItem(id){
   if(!confirm('Удалить эту новость?')) return;
   try {
-    const r=await fetch('/api/post?id
+    const r=await fetch('/api/post?id='+id,{method:'DELETE',headers:{'Authorization':'Bearer '+adminToken.value}});
+    if(r.status===401){ adminLogout(); openLoginModal(); return; }
+    await loadNews(); renderAdminList();
+  } catch {}
+}
+
+loadNews();
+</script>
+
+</body>
+</html>
